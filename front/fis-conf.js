@@ -6,25 +6,22 @@ fis.match('*', {
     release: '/static/$0'
 });
 
-fis.match('*.php', {
-    release: '$0'
-});
-
-fis.match('/smarty/{*,**/*}', {
-    release: '$0'
-});
-
 fis.match('*.tpl', {
-    release: '/template/$0'
+    release: '/view/template/$0'
 });
 
-fis.match('/(widget/{*,**/*}.tpl)', {
+fis.match('/(**/widget/*.tpl)', {
+    useMap: true,
+    url: '$1' // 这个比较重要
+});
+
+fis.match('/(**/widget/**/*.tpl)', {
     useMap: true,
     url: '$1' // 这个比较重要
 });
 
 fis.match('map.json', {
-    release: '/config/$0'
+    release: '/libs/smarty/config/$0'
 });
 
 fis.match('/widget/{*,**/*}.js', {

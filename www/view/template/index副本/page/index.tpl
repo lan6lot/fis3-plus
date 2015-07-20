@@ -6,8 +6,8 @@
     <!--[FIS_JS_SCRIPT_HOOK]-->
 </head>
 <body>
-    {widget name="widget/header.tpl"}
-    {widget name="widget/body.tpl"}
-    {widget name="widget/footer.tpl"}
+    {widget name="index/widget/header.tpl"}
+    {widget name="index/widget/body.tpl"}
+    {widget name="index/widget/footer.tpl"}
 </body>
 {/html}

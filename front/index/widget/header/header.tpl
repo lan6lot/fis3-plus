@@ -5,6 +5,6 @@
         header
     </p>
     <script type="text/javascript">
-    require('widget/header.js');
+    require('index/widget/header/header.js');
     </script>
 </section>

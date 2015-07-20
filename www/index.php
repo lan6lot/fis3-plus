@@ -1,12 +1,12 @@
 <?php
 
-// PHP 是世界上最好的语言之一
-
+error_reporting(E_ALL);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 date_default_timezone_set('Asia/Shanghai');
 
 define('ROOT', dirname(__FILE__));
 
-require(ROOT . '/smarty/Smarty.class.php');
+require(ROOT . '/libs/smarty/Smarty.class.php');
 
 $MIMEType = array(
     'bmp' => 'image/bmp',
@@ -72,12 +72,22 @@ if ((preg_match('@\.([a-z]+)@i', $script, $m))) {
         exit(0);
     }
 }
-
 $smarty = new Smarty();
 $smarty->setPluginsDir(array(
-    ROOT . '/plugin'
+    ROOT . '/libs/smarty/plugins',
+    ROOT . '/libs/smarty/fis-plus-smarty-plugin'
 ));
-$smarty->setTemplateDir(ROOT . '/template');
-$smarty->setCompileDir(ROOT . '/templates_c');
-$smarty->setConfigDir(ROOT . '/config');
-$smarty->display('page/index.tpl'); // 从 template_dir 下寻找
+$smarty->setTemplateDir(ROOT . '/view/template');
+$smarty->setCompileDir(ROOT . '/view/templates_c');
+$smarty->setConfigDir(ROOT . '/libs/smarty/config');
+
+$data = array();
+$data['name'] = 'kenny';
+$data['id'] = '123';
+$data['title'] = 'haha';
+
+$smarty->assign('data',$data);
+
+$smarty->display('index/page/index.tpl');
+
+

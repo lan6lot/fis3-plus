@@ -1,0 +1,29 @@
+{
+    "res": {
+        "index/static/mod.js": {
+            "uri": "/static/index/static/mod.js",
+            "type": "js"
+        },
+        "index/widget/header/header.css": {
+            "uri": "/static/index/widget/header/header.css",
+            "type": "css"
+        },
+        "index/widget/header/header.js": {
+            "uri": "/static/index/widget/header/header.js",
+            "type": "js"
+        },
+        "index/widget/header/header.tpl": {
+            "uri": "index/widget/header/header.tpl",
+            "type": "tpl",
+            "deps": [
+                "index/widget/header/header.css",
+                "index/widget/header/header.js"
+            ]
+        },
+        "common/static/script/mod.js": {
+            "uri": "/static/common/static/script/mod.js",
+            "type": "js"
+        }
+    },
+    "pkg": {}
+}
