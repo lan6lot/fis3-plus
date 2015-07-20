@@ -1,5 +1,20 @@
+/*
+ * 用到的插件,需要全局安装
+ * fis-parser-ejs
+ *
+ */
 
-// node_modules 默认被添加到了 ignore 列表中，所以不做处理也不会被发布
+var CONFIG = {
+    deploy: {
+        receiver : 'http://www.fis-smarty.com/receiver.php',
+        root : '/Users/kenny/fis3/fis3-plus/www/'
+    },
+
+    domain : {
+        online : 'http://www.56xdd.com',
+        cdn : 'http://www.56xdd.com'
+    }
+}
 
 fis.match('*', {
     useHash: false, // md5 都关掉
@@ -7,20 +22,27 @@ fis.match('*', {
 });
 
 fis.match('*.tpl', {
+    useHash: false,
     release: '/view/template/$0'
+});
+
+fis.match('*.ejs', {
+    parser: fis.plugin('ejs'),
+    rExt: '.js'
 });
 
 fis.match('/(**/widget/*.tpl)', {
     useMap: true,
-    url: '$1' // 这个比较重要
+    url: '$1'
 });
 
 fis.match('/(**/widget/**/*.tpl)', {
     useMap: true,
-    url: '$1' // 这个比较重要
+    url: '$1'
 });
 
 fis.match('map.json', {
+    useHash: false,
     release: '/libs/smarty/config/$0'
 });
 
@@ -38,3 +60,23 @@ fis.match(/.*\.partial\.js$/, {
 fis.match('/plugin/test/{*,**/*}', {
     release: false
 });
+
+
+// fis3 release debug
+fis.media('debug').match('*.{js,css,png,jpg}', {
+    useHash: false,
+    useSprite: false,
+    optimizer: null
+})
+
+// fis3 release qa
+fis.media('qa').match('*', {
+    deploy: fis.plugin('http-push', {
+        receiver: CONFIG.deploy.receiver,
+        to: CONFIG.deploy.root
+    })
+})
+
+
+
+

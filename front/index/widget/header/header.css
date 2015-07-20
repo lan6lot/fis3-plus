@@ -1,3 +1,5 @@
+@import url('/common/static/style/demo.css');
+
 .header {
-    background-color: #EEFF00;
+    background: url('/index/static/image/1.jpg');
 }
