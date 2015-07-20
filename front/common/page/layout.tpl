@@ -11,7 +11,7 @@
     <!--[FIS_CSS_LINKS_HOOK]-->
 </head>
 <body>
-	<div>layout</div>
+	<div>this is from layout</div>
     {block name="block_content"}{/block}
     <!--[FIS_JS_SCRIPT_HOOK]-->
 </body>
