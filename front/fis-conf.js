@@ -11,8 +11,8 @@ var CONFIG = {
     },
 
     domain : {
-        online : 'http://www.56xdd.com',
-        cdn : 'http://www.56xdd.com'
+        online : 'http://www.your-domain.com',
+        cdn : 'http://www.your-cdn.com'
     }
 }
 
@@ -21,29 +21,40 @@ fis.match('*', {
     release: '/static/$0'
 });
 
+// tpl文件搬家
 fis.match('*.tpl', {
     useHash: false,
     release: '/view/template/$0'
 });
+fis.match('/(**/widget/*.tpl)', {
+    useMap: true,
+    url: '$1'
+});
+fis.match('/(**/widget/**/*.tpl)', {
+    useMap: true,
+    url: '$1'
+});
+
+// less文件编译成css
+fis.match('*.less', {
+  parser: fis.plugin('less'),
+  rExt: '.css'
+})
 
 fis.match('*.ejs', {
     parser: fis.plugin('ejs'),
     rExt: '.js'
 });
 
-fis.match('/(**/widget/*.tpl)', {
-    useMap: true,
-    url: '$1'
-});
-
-fis.match('/(**/widget/**/*.tpl)', {
-    useMap: true,
-    url: '$1'
-});
-
+// 资源映射表复制入smarty config
 fis.match('map.json', {
     useHash: false,
     release: '/libs/smarty/config/$0'
+});
+
+// 开启同名依赖
+fis.match('/**/widget/**', {
+    useSameNameRequire: true
 });
 
 fis.match('/widget/{*,**/*}.js', {
@@ -52,15 +63,6 @@ fis.match('/widget/{*,**/*}.js', {
     // fis3 是可以加载项目里面的 node_modules 下的插件的，但是这个对理解 fis3 有帮助
     // 不建议在生产环境中这么干，不然维护起来会比较麻烦，fis 依然推荐全局做安装
 });
-
-fis.match(/.*\.partial\.js$/, {
-    isMod: false
-});
-
-fis.match('/plugin/test/{*,**/*}', {
-    release: false
-});
-
 
 // fis3 release debug
 fis.media('debug').match('*.{js,css,png,jpg}', {
