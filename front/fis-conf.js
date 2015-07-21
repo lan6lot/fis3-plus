@@ -5,80 +5,138 @@
  */
 
 var CONFIG = {
-    deploy: {
+
+    // QA 测试部署路径
+    deploy_qa: {
         receiver : 'http://www.fis-smarty.com/receiver.php',
         root : '/Users/kenny/fis3/fis3-plus/www/'
     },
-
+    // 本地测试部署路径
+    deploy_local: {
+        root : '/Users/kenny/fis3/fis3-plus/www/'
+    },
+    // 发布domain
     domain : {
         online : 'http://www.your-domain.com',
         cdn : 'http://www.your-cdn.com'
-    }
+    },
+    // 模块拆分
+    modules : ['common','index']
 }
 
+// md5都关掉
 fis.match('*', {
-    useHash: false, // md5 都关掉
     release: '/static/$0'
 });
 
-// tpl文件搬家
+// tpl文件
 fis.match('*.tpl', {
-    useHash: false,
-    release: '/view/template/$0'
-});
-fis.match('/(**/widget/*.tpl)', {
-    useMap: true,
-    url: '$1'
-});
-fis.match('/(**/widget/**/*.tpl)', {
-    useMap: true,
-    url: '$1'
-});
+        release: '/view/template/$0'
+    })
+    .match('/(**/widget/**/*.tpl)', {
+        useMap: true,
+        url: '$1'
+    })
 
 // less文件编译成css
 fis.match('*.less', {
-  parser: fis.plugin('less'),
-  rExt: '.css'
+    parser: fis.plugin('less'),
+    rExt: '.css'
 })
 
+// ejs模板引擎解析
 fis.match('*.ejs', {
     parser: fis.plugin('ejs'),
     rExt: '.js'
 });
 
-// 资源映射表复制入smarty config
+// 资源映射表加入Smarty config
 fis.match('map.json', {
-    useHash: false,
     release: '/libs/smarty/config/$0'
 });
 
-// 开启同名依赖
+// 开启同名依赖, 模板会依赖同名css、js；js 会依赖同名 css，不需要显式引用。
 fis.match('/**/widget/**', {
     useSameNameRequire: true
 });
 
-fis.match('/widget/{*,**/*}.js', {
-    isMod: true,
-    postprocessor: fis.plugin('mod.js-define-wrapper') // 未发布 NPM
-    // fis3 是可以加载项目里面的 node_modules 下的插件的，但是这个对理解 fis3 有帮助
-    // 不建议在生产环境中这么干，不然维护起来会比较麻烦，fis 依然推荐全局做安装
+/* 
+ * 前端模块化
+ * 使用FIS3的mod.js
+ */
+fis.hook('module', {
+        mode: 'commonJS'
+    }).match('/common/widget/**/*.js', {
+        isMod: true
+    })
+
+fis.match('::package', {
+    // npm install [-g] fis3-postpackager-loader
+    // 分析 __RESOURCE_MAP__ 结构，来解决资源加载问题
+    postpackager: fis.plugin('loader', {
+        resourceType: 'commonJs',
+        useInlineMap: true // 资源映射表内嵌
+    })
 });
 
-// fis3 release debug
-fis.media('debug').match('*.{js,css,png,jpg}', {
-    useHash: false,
-    useSprite: false,
-    optimizer: null
+// match('*.{js,less,png,jpg}')
+
+// fis3 release local
+fis.media('local').match('*', {
+    deploy: fis.plugin('local-deliver', {
+        to: CONFIG.deploy_local.root
+    })
 })
 
 // fis3 release qa
 fis.media('qa').match('*', {
     deploy: fis.plugin('http-push', {
-        receiver: CONFIG.deploy.receiver,
-        to: CONFIG.deploy.root
+        receiver: CONFIG.deploy_qa.receiver,
+        to: CONFIG.deploy_qa.root
     })
 })
 
+// fis3 release production
+fis.media('production').match('*',{
+        useHash: true
+    }).match('*.tpl', {
+        useHash: false
+    })
+    // 静态资源压缩
+    .match('*.less', {
+        optimizer: fis.plugin('clean-css', {
+            // option of clean-css
+        })
+    })
+    .match('*.js', {
+        optimizer: fis.plugin('uglify-js', {
+            // https://github.com/mishoo/UglifyJS2#compressor-options
+        })
+    })
+    // 压缩png文件
+    .match('*.png', {
+        optimizer: fis.plugin('png-compressor', {
+            // pngcrush or pngquant
+            // pngcrush - http://pmt.sourceforge.net/pngcrush
+            // pngquant - https://pngquant.org
+            type : 'pngquant'
+        })
+    })
+    // CSS Sprites
+    .match('::package', {
+        spriter: fis.plugin('csssprites')
+    }).match('*.less', {
+        // 给匹配到的文件分配属性 `useSprite`
+        useSprite: true
+    })
 
+    // 静态资源打包
+
+    .match('/index/widget/**/*.js', {
+        packTo: '/pkg/index_pkg.js'
+
+    }).match('/index/widget/**/*.less', {
+        packTo: '/static/index.css'
+    })
 
 

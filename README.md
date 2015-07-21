@@ -27,8 +27,10 @@ npm install -g fis3
 
 ### 依赖的插件
 ```bash
-npm install -g fis-parser-ejs
+npm install -g fis3-hook-module
+npm install -g fis3-postpackager-loader
 npm install -g fis-parser-less
+npm install -g fis-parser-ejs
 ```
 ### 命令
 

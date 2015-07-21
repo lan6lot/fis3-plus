@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{html framework="static/script/mod.js"}
+{html framework="common/static/script/mod.js"}
 <head>
 	{block name="block_head_seo"}
     	<title>Smarty TEST</title>
