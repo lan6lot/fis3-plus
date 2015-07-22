@@ -7,32 +7,34 @@ fis.set('project.ignore', ['node_modules/**','bower_components/**','output/**','
 // static目录
 fis.set('static','/static');
 // view目录
-fis.set('view','/apps/modules/www/views');
+fis.set('view','/view/template');
 // map目录
 fis.set('map','/libs/smarty/config');
 
-var CONFIG = {
+// 本地测试环境根目录
+var base_local = '/Users/kenny/fis3/fis3-plus/www',
+    base_qa = '/Users/kenny/fis3/fis3-plus/www',
+    base_onilne = '/Users/kenny/fis3/fis3-plus/www';
 
+var CONFIG = {
+    // 本地测试部署路径
+    deploy_local: {
+        root : base_local
+    },
     // QA 测试部署路径
     deploy_qa: {
         receiver : 'http://www.fis-smarty.com/receiver.php',
-        root : '/Users/kenny/fis3/fis3-plus/www/'
-    },
-    // 本地测试部署路径
-    deploy_local: {
-        root : '/Users/kenny/fis3/fis3-plus/www/'
+        root : base_qa
     },
     // 线上环境部署路径
     production: {
-        root : '/Users/kenny/fis3/fis3-plus/www/'
+        root : base_onilne
     },
     // 发布domain
     domain : {
         online : 'http://www.your-domain.com',
         cdn : 'http://www.your-cdn.com'
-    },
-    // 模块拆分
-    modules : ['common','index']
+    }
 }
 
 // md5都关掉

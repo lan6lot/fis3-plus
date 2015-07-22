@@ -1,7 +1,7 @@
 {extends file="common/page/layout.tpl"}
 
 {block name="block_head_seo"}
-	<title>indexkk</title>
+	<title>FIS3 Smarty Demo</title>
 {/block}
 {block name="block_head_static"}
 	{require name="index/static/script/jquery.js"}
