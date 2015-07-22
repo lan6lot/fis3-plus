@@ -1,8 +1,15 @@
 /*
- * 用到的插件,需要全局安装
- * fis-parser-ejs
- *
+ * fis3 smarty demo
  */
+
+fis.set('project.ignore', ['node_modules/**','bower_components/**','output/**','*.md','bower.json','fis-conf.js']);
+
+// static目录
+fis.set('static','/static');
+// view目录
+fis.set('view','/apps/modules/www/views');
+// map目录
+fis.set('map','/libs/smarty/config');
 
 var CONFIG = {
 
@@ -13,6 +20,10 @@ var CONFIG = {
     },
     // 本地测试部署路径
     deploy_local: {
+        root : '/Users/kenny/fis3/fis3-plus/www/'
+    },
+    // 线上环境部署路径
+    production: {
         root : '/Users/kenny/fis3/fis3-plus/www/'
     },
     // 发布domain
@@ -26,17 +37,22 @@ var CONFIG = {
 
 // md5都关掉
 fis.match('*', {
-    release: '/static/$0'
+    release: '${static}/$0'
 });
 
 // tpl文件
 fis.match('*.tpl', {
-        release: '/view/template/$0'
+        release: '${view}/$0'
     })
     .match('/(**/widget/**/*.tpl)', {
         useMap: true,
         url: '$1'
     })
+
+// 资源映射表加入Smarty config
+fis.match('map.json', {
+    release: '${map}/$0'
+});
 
 // less文件编译成css
 fis.match('*.less', {
@@ -50,10 +66,6 @@ fis.match('*.ejs', {
     rExt: '.js'
 });
 
-// 资源映射表加入Smarty config
-fis.match('map.json', {
-    release: '/libs/smarty/config/$0'
-});
 
 // 开启同名依赖, 模板会依赖同名css、js；js 会依赖同名 css，不需要显式引用。
 fis.match('/**/widget/**', {
@@ -98,8 +110,13 @@ fis.media('qa').match('*', {
 
 // fis3 release production
 fis.media('production').match('*',{
-        useHash: true
+        useHash: true,
+        deploy: fis.plugin('local-deliver', {
+            to: CONFIG.production.root
+        })
     }).match('*.tpl', {
+        useHash: false
+    }).match('map.json', {
         useHash: false
     })
     // 静态资源压缩
@@ -131,12 +148,27 @@ fis.media('production').match('*',{
     })
 
     // 静态资源打包
+    // .match('::packager', {
+    //     postpackager: fis.plugin('loader', {
+    //         allInOne: true,
+    //         processor: {
+    //           'tpl': 'html'
+    //         }
+    //     })
+    // })
+
 
     .match('/index/widget/**/*.js', {
         packTo: '/pkg/index_pkg.js'
 
+    }).match('/common/widget/**/*.js', {
+        packTo: '/pkg/common_pkg.js'
+
+    }).match('/index/static/script/*.js', {
+        packTo: '/pkg/lib_pkg.js'
+
     }).match('/index/widget/**/*.less', {
-        packTo: '/static/index.css'
+        packTo: '/pkg/index.css'
     })
 
 

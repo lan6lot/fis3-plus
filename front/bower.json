@@ -1,0 +1,21 @@
+{
+  "name": "fis3-smarty-demo",
+  "version": "1.0.0",
+  "homepage": "https://github.com/thatk/fis3-plus",
+  "authors": [
+    "kenny <k@kenny.cc>"
+  ],
+  "description": "fis3 smarty demo",
+  "main": "fis-conf.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular": "~1.4.3"
+  }
+}
