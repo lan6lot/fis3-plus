@@ -1,7 +1,5 @@
 ## fis3-plus
 
-Under Developing
-
 > FIS 3 利用 Smarty 模板引擎实现前后端分离模块化的解决方案
 
 ### 安装 Node 和 NPM
@@ -34,19 +32,26 @@ npm install -g fis-parser-ejs
 ```
 ### 命令
 
-进入**项目根目录**执行命令，进行构建。
 > 项目根目录：FIS3 配置文件（默认`fis-conf.js`）所在的目录为项目根目录。
+> 以下命令需要对应修改 `fis-conf.js` 文件中 `CONFIG` 常量的绝对路径。
+
+#### 发布到本地目录下
 
 ```bash
-fis3 release -d <path>
+fis3 release local
 ```
-- `<path>` 任意目录
-- `fis3 release -h` 获取更多参数
 
-#### 构建发布到项目目录的 `output` 目录下
+#### 发布到QA环境下
 
 ```bash
-fis3 release -d ./output
+fis3 release qa
 ```
+
+#### 线上编译发布
+
+```bash
+fis3 release production
+```
+
 
 

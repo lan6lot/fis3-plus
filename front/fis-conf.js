@@ -72,7 +72,9 @@ fis.match('*.ejs', {
 // 开启同名依赖, 模板会依赖同名css、js；js 会依赖同名 css，不需要显式引用。
 fis.match('/**/widget/**', {
     useSameNameRequire: true
-});
+}).match('/**/view/**', {
+    useSameNameRequire: true
+})
 
 /* 
  * 前端模块化

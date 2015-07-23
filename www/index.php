@@ -80,6 +80,8 @@ $smarty->setPluginsDir(array(
 $smarty->setTemplateDir(ROOT . '/view/template');
 $smarty->setCompileDir(ROOT . '/view/templates_c');
 $smarty->setConfigDir(ROOT . '/libs/smarty/config');
+$smarty->left_delimiter = "{%";
+$smarty->right_delimiter = "%}";
 
 $data = array();
 $data['name'] = 'kenny';
